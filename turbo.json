@@ -4,15 +4,24 @@
 		"biome": {
 			"dependsOn": ["^biome"]
 		},
+		"prettier": {
+			"dependsOn": ["^prettier"]
+		},
+		"format": {
+			"dependsOn": ["biome", "prettier", "^format"]
+		},
 		"build": {
 			"dependsOn": ["^build"],
 			"outputs": ["dist/**"]
 		},
 		"check": {
-			"dependsOn": ["check-biome", "check-types", "^check"]
+			"dependsOn": ["check-biome", "check-prettier", "check-types", "^check"]
 		},
 		"check-biome": {
 			"dependsOn": ["^check-biome"]
+		},
+		"check-prettier": {
+			"dependsOn": ["^check-prettier"]
 		},
 		"check-types": {
 			"dependsOn": ["^check-types"]

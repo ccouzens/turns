@@ -1,0 +1,9 @@
+*.css
+*.gql
+*.graphql
+*.js
+*.json
+*.jsx
+*.ts
+*.tsx
+*.yaml
