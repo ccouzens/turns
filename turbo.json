@@ -1,6 +1,11 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
   "tasks": {
+    "biome": {
+      "dependsOn": [
+        "^biome"
+      ]
+    },
     "build": {
       "dependsOn": [
         "^build"
@@ -11,8 +16,14 @@
     },
     "check": {
       "dependsOn": [
+        "check-biome",
         "check-types",
         "^check"
+      ]
+    },
+    "check-biome": {
+      "dependsOn": [
+        "^check-biome"
       ]
     },
     "check-types": {
