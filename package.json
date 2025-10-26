@@ -1,27 +1,27 @@
 {
-  "$schema": "https://www.schemastore.org/package.json",
-  "packageManager": "pnpm@10.0.0",
-  "name": "turns",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "biome": "biome check --write",
-    "check-biome": "biome check",
-    "check-types": "tsc --noEmit",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.3.0",
-    "turbo": "^2.5.8",
-    "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.1.14"
-  },
-  "pnpm": {
-    "overrides": {
-      "vite": "npm:rolldown-vite@7.1.14"
-    }
-  }
+	"$schema": "https://www.schemastore.org/package.json",
+	"packageManager": "pnpm@10.0.0",
+	"name": "turns",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"biome": "biome check --write",
+		"check-biome": "biome check",
+		"check-types": "tsc --noEmit",
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.0",
+		"turbo": "^2.5.8",
+		"typescript": "~5.9.3",
+		"vite": "npm:rolldown-vite@7.1.14"
+	},
+	"pnpm": {
+		"overrides": {
+			"vite": "npm:rolldown-vite@7.1.14"
+		}
+	}
 }
