@@ -8,18 +8,25 @@ if (m === null) {
 	throw new Error("getScreenCTM not expected to be null");
 }
 
-main.addEventListener("touchstart", (e) => {
+const touchHandler: (e: TouchEvent) => void = (e) => {
 	// e.preventDefault();
-	console.log(
-		[...e.changedTouches].map((t) => ({ pageX: t.pageX, pageY: t.pageY })),
-	);
 	const m = main.getScreenCTM()?.inverse();
 	if (m === undefined) {
 		return;
 	}
-	for (const { pageX, pageY } of e.changedTouches) {
+	for (const { pageX, pageY, identifier } of e.changedTouches) {
 		const svgX = m.a * pageX + m.c * pageY + m.e;
 		const svgY = m.b * pageX + m.d * pageY + m.f;
-		console.log(svgX, svgY);
+		const svgCircle = document.createElementNS(
+			"http://www.w3.org/2000/svg",
+			"circle",
+		);
+		svgCircle.setAttribute("r", 0.1);
+		svgCircle.setAttribute("cx", svgX);
+		svgCircle.setAttribute("cy", svgY);
+		main.append(svgCircle);
+		console.log(identifier);
 	}
-});
+};
+main.addEventListener("touchstart", touchHandler);
+main.addEventListener("touchmove", touchHandler);
