@@ -1,24 +1,25 @@
-import "./style.css";
-import viteLogo from "/vite.svg";
-import { setupCounter } from "./counter.ts";
-import typescriptLogo from "./typescript.svg";
+const main = document.getElementById("main");
+if (!(main instanceof SVGGraphicsElement)) {
+	throw new Error("main not instance of SVGElement");
+}
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+const m = main.getScreenCTM();
+if (m === null) {
+	throw new Error("getScreenCTM not expected to be null");
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);
+main.addEventListener("touchstart", (e) => {
+	// e.preventDefault();
+	console.log(
+		[...e.changedTouches].map((t) => ({ pageX: t.pageX, pageY: t.pageY })),
+	);
+	const m = main.getScreenCTM()?.inverse();
+	if (m === undefined) {
+		return;
+	}
+	for (const { pageX, pageY } of e.changedTouches) {
+		const svgX = m.a * pageX + m.c * pageY + m.e;
+		const svgY = m.b * pageX + m.d * pageY + m.f;
+		console.log(svgX, svgY);
+	}
+});

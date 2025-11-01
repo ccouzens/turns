@@ -9,10 +9,13 @@
 			"outputs": ["dist/**"]
 		},
 		"check": {
-			"dependsOn": ["check-biome", "check-types", "^check"]
+			"dependsOn": ["check-biome", "check-superhtml", "check-types", "^check"]
 		},
 		"check-biome": {
 			"dependsOn": ["^check-biome"]
+		},
+		"check-superhtml": {
+			"inputs": ["index.html"]
 		},
 		"check-types": {
 			"dependsOn": ["^check-types"]
@@ -25,6 +28,9 @@
 			"dependsOn": ["build"],
 			"persistent": true,
 			"cache": false
+		},
+		"superhtml": {
+			"inputs": ["index.html"]
 		}
 	}
 }
