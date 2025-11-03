@@ -1,24 +1,45 @@
-import "./style.css";
-import viteLogo from "/vite.svg";
-import { setupCounter } from "./counter.ts";
-import typescriptLogo from "./typescript.svg";
+const main = document.getElementById("main");
+if (!(main instanceof SVGGraphicsElement)) {
+	throw new Error("main not instance of SVGElement");
+}
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`;
+const colours = [
+	"white",
+	"green",
+	"purple",
+	"yellow",
+	"blue",
+	"orange",
+	"pink",
+	"grey",
+	"black",
+];
 
-setupCounter(document.querySelector<HTMLButtonElement>("#counter")!);
+const m = main.getScreenCTM();
+if (m === null) {
+	throw new Error("getScreenCTM not expected to be null");
+}
+
+const touchHandler: (e: TouchEvent) => void = (e) => {
+	// e.preventDefault();
+	const m = main.getScreenCTM()?.inverse();
+	if (m === undefined) {
+		return;
+	}
+	for (const { pageX, pageY, identifier } of e.changedTouches) {
+		const svgX = m.a * pageX + m.c * pageY + m.e;
+		const svgY = m.b * pageX + m.d * pageY + m.f;
+		const svgCircle = document.createElementNS(
+			"http://www.w3.org/2000/svg",
+			"circle",
+		);
+		svgCircle.setAttribute("r", 0.1);
+		svgCircle.setAttribute("cx", svgX);
+		svgCircle.setAttribute("cy", svgY);
+		svgCircle.setAttribute("fill", colours[identifier] ?? "yellow");
+		main.append(svgCircle);
+		console.log(identifier);
+	}
+};
+main.addEventListener("touchstart", touchHandler);
+main.addEventListener("touchmove", touchHandler);
