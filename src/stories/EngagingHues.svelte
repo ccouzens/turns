@@ -41,6 +41,6 @@ const engagingHues = $derived.by(() => {
 
 <div class="hueLine">
 	{#each engagingHues as [identifier, hue] (identifier)}
-		<div class="hue" style:--hue={hue}></div>
+		<div class="hue" style:--hue={hue} style:order={hue}></div>
 	{/each}
 </div>

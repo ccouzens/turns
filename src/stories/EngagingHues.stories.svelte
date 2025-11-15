@@ -13,16 +13,7 @@ const { Story } = defineMeta({
 		actions: { control: "object" },
 	},
 	args: {
-		actions: [
-			{ key: "add", id: 1 },
-			{ key: "add", id: 2 },
-			{ key: "add", id: 3 },
-			{ key: "add", id: 4 },
-			{ key: "add", id: 5 },
-			{ key: "add", id: 6 },
-			{ key: "add", id: 7 },
-			{ key: "add", id: 8 },
-		],
+		actions: new Array(20).fill(0).map((_, i) => ({ key: "add", id: i })),
 		randomSequenceStart: new Array(20).fill(0.5),
 	},
 });
