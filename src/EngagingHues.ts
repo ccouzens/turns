@@ -1,14 +1,18 @@
-const prevAssignmentDistance = 20;
-const currentAssignmentDistance = prevAssignmentDistance * 2;
+import { wrappingDifference } from "./EngagingHues/wrappingDifference";
+
+function hueLikelihoodScore(
+	currentDistances: IteratorObject<number>,
+	formerDistances: IteratorObject<number>,
+): number {
+	return (
+		currentDistances.reduce((sum, distance) => sum + 20 / (distance + 0.1), 0) +
+		formerDistances
+			.map((i) => i)
+			.reduce((sum, distance) => sum + 1 / (distance + 0.1), 0)
+	);
+}
 const candidates = 360;
 const previousHuesSize = 10;
-
-/**
-On a repeating colour line, find an index that have wrapped around
-*/
-function candidateIndex(n: number): number {
-	return (n + candidates) % candidates;
-}
 
 /**
 Take a sequence of numbers. Find the minimum amongst them, and randomly pick one of their indexes.
@@ -57,7 +61,7 @@ export class EngagingHues {
 		this.#randomSequence = randomSequence;
 	}
 
-	drop(identifier: Identifier) {
+	remove(identifier: Identifier) {
 		const hue = this.#assignments.get(identifier);
 		if (hue !== undefined) {
 			this.#assignments.delete(identifier);
@@ -72,7 +76,8 @@ export class EngagingHues {
 		return this.#assignments.get(identifier);
 	}
 
-	get assignments(): Iterator<[Identifier, number]> {
+	get assignments(): Iterable<[Identifier, number]> &
+		Iterator<[Identifier, number]> {
 		return this.#assignments.entries();
 	}
 
@@ -81,22 +86,15 @@ export class EngagingHues {
 	 * The assignment is randomly selected out of the set of candidates.
 	 */
 	add(identifier: Identifier): number {
-		const candidateHues: number[] = new Array(candidates).fill(0);
-		for (const hue of this.#previousHues) {
-			for (let i = -prevAssignmentDistance; i <= prevAssignmentDistance; i++) {
-				candidateHues[candidateIndex(hue + i)] +=
-					prevAssignmentDistance - Math.abs(i);
-			}
-		}
-		for (const hue of this.#assignments.values()) {
-			for (
-				let i = -currentAssignmentDistance;
-				i <= currentAssignmentDistance;
-				i++
-			) {
-				candidateHues[candidateIndex(hue + i)] +=
-					currentAssignmentDistance - Math.abs(i);
-			}
+		const candidateHues: number[] = new Array(candidates);
+		for (let i = 0; i < candidates; i++) {
+			const currentDistances = this.#assignments
+				.values()
+				.map((a) => wrappingDifference(i, a));
+			const formerDistances = this.#previousHues[Symbol.iterator]().map((a) =>
+				wrappingDifference(i, a),
+			);
+			candidateHues[i] = hueLikelihoodScore(currentDistances, formerDistances);
 		}
 
 		const hue = pickRandomMinimum(
