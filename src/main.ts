@@ -20,26 +20,39 @@ const touchHandler: (e: TouchEvent) => void = (e) => {
 	if (m === undefined) {
 		return;
 	}
-	const touchIds = new Set(
-		e.changedTouches[Symbol.iterator]().map((t) => t.identifier),
-	);
-	engagingHues.set(touchIds);
 
-	for (const { pageX, pageY, identifier } of e.changedTouches) {
-		const svgX = m.a * pageX + m.c * pageY + m.e;
-		const svgY = m.b * pageX + m.d * pageY + m.f;
-		const svgCircle = document.createElementNS(
-			"http://www.w3.org/2000/svg",
-			"circle",
-		);
-		svgCircle.setAttribute("r", 0.1);
-		svgCircle.setAttribute("cx", svgX);
-		svgCircle.setAttribute("cy", svgY);
-		svgCircle.setAttribute(
-			"fill",
-			`hsl(${engagingHues.lookup(identifier)} 100% 50%)`,
-		);
-		main.append(svgCircle);
+	switch (e.type) {
+		case "touchstart":
+			for (const { identifier } of e.changedTouches) {
+				engagingHues.add(identifier);
+			}
+			break;
+		case "touchmove":
+			break;
+		case "touchend":
+		case "touchcancel":
+			for (const { identifier } of e.changedTouches) {
+				engagingHues.remove(identifier);
+			}
+	}
+
+	if (e.type === "touchmove" || e.type === "touchstart") {
+		for (const { pageX, pageY, identifier } of e.changedTouches) {
+			const svgX = m.a * pageX + m.c * pageY + m.e;
+			const svgY = m.b * pageX + m.d * pageY + m.f;
+			const svgCircle = document.createElementNS(
+				"http://www.w3.org/2000/svg",
+				"circle",
+			);
+			svgCircle.setAttribute("r", 0.1);
+			svgCircle.setAttribute("cx", svgX);
+			svgCircle.setAttribute("cy", svgY);
+			svgCircle.setAttribute(
+				"fill",
+				`hsl(${engagingHues.lookup(identifier)} 100% 50%)`,
+			);
+			main.append(svgCircle);
+		}
 	}
 };
 main.addEventListener("touchstart", touchHandler);

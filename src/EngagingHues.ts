@@ -81,19 +81,6 @@ export class EngagingHues {
 		return this.#assignments.entries();
 	}
 
-	set(identifiers: Set<Identifier>): void {
-		for (const identifier of this.#assignments.keys()) {
-			if (!identifiers.has(identifier)) {
-				this.remove(identifier);
-			}
-		}
-		for (const identifier of identifiers) {
-			if (!this.#assignments.has(identifier)) {
-				this.add(identifier);
-			}
-		}
-	}
-
 	/**
 	 * Add a new player's hue.
 	 * The assignment is randomly selected out of the set of candidates.
