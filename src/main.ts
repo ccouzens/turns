@@ -1,31 +1,30 @@
+import { EngagingHues } from "./EngagingHues";
+
 const main = document.getElementById("main");
 if (!(main instanceof SVGGraphicsElement)) {
 	throw new Error("main not instance of SVGElement");
 }
 
-const colours = [
-	"white",
-	"green",
-	"purple",
-	"yellow",
-	"blue",
-	"orange",
-	"pink",
-	"grey",
-	"black",
-];
-
-const m = main.getScreenCTM();
-if (m === null) {
-	throw new Error("getScreenCTM not expected to be null");
+function* randomSequence() {
+	while (true) {
+		yield Math.random();
+	}
 }
+// const touches: Map<Touch['identifier'], Pick<Touch, Pick<SVGCircleElement, 'cx' | 'cy'>> = new Map();
+const engagingHues = new EngagingHues(randomSequence());
 
 const touchHandler: (e: TouchEvent) => void = (e) => {
+	console.log(e.type);
 	// e.preventDefault();
 	const m = main.getScreenCTM()?.inverse();
 	if (m === undefined) {
 		return;
 	}
+	const touchIds = new Set(
+		e.changedTouches[Symbol.iterator]().map((t) => t.identifier),
+	);
+	engagingHues.set(touchIds);
+
 	for (const { pageX, pageY, identifier } of e.changedTouches) {
 		const svgX = m.a * pageX + m.c * pageY + m.e;
 		const svgY = m.b * pageX + m.d * pageY + m.f;
@@ -36,10 +35,14 @@ const touchHandler: (e: TouchEvent) => void = (e) => {
 		svgCircle.setAttribute("r", 0.1);
 		svgCircle.setAttribute("cx", svgX);
 		svgCircle.setAttribute("cy", svgY);
-		svgCircle.setAttribute("fill", colours[identifier] ?? "yellow");
+		svgCircle.setAttribute(
+			"fill",
+			`hsl(${engagingHues.lookup(identifier)} 100% 50%)`,
+		);
 		main.append(svgCircle);
-		console.log(identifier);
 	}
 };
 main.addEventListener("touchstart", touchHandler);
 main.addEventListener("touchmove", touchHandler);
+main.addEventListener("touchend", touchHandler);
+main.addEventListener("touchcancel", touchHandler);

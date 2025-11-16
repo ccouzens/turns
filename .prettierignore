@@ -1,6 +1,7 @@
 *.css
 *.gql
 *.graphql
+*.html
 *.js
 *.json
 *.jsx

@@ -1,6 +1,5 @@
 <script module>
 import { defineMeta } from "@storybook/addon-svelte-csf";
-import { fn } from "storybook/test";
 import EngagingHues from "./EngagingHues.svelte";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories

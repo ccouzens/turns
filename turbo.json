@@ -8,7 +8,7 @@
 			"dependsOn": ["^prettier"]
 		},
 		"format": {
-			"dependsOn": ["biome", "prettier", "^format"]
+			"dependsOn": ["biome", "prettier", "superhtml", "^format"]
 		},
 		"build": {
 			"dependsOn": ["^build"],
