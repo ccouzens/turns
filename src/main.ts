@@ -10,48 +10,46 @@ function* randomSequence() {
 		yield Math.random();
 	}
 }
-// const touches: Map<Touch['identifier'], Pick<Touch, Pick<SVGCircleElement, 'cx' | 'cy'>> = new Map();
+const touches: Map<Touch["identifier"], SVGCircleElement> = new Map();
 const engagingHues = new EngagingHues(randomSequence());
 
 const touchHandler: (e: TouchEvent) => void = (e) => {
 	console.log(e.type);
 	// e.preventDefault();
 	const m = main.getScreenCTM()?.inverse();
-	if (m === undefined) {
-		return;
-	}
 
-	switch (e.type) {
-		case "touchstart":
-			for (const { identifier } of e.changedTouches) {
-				engagingHues.add(identifier);
-			}
-			break;
-		case "touchmove":
-			break;
-		case "touchend":
-		case "touchcancel":
-			for (const { identifier } of e.changedTouches) {
-				engagingHues.remove(identifier);
-			}
-	}
-
-	if (e.type === "touchmove" || e.type === "touchstart") {
-		for (const { pageX, pageY, identifier } of e.changedTouches) {
-			const svgX = m.a * pageX + m.c * pageY + m.e;
-			const svgY = m.b * pageX + m.d * pageY + m.f;
-			const svgCircle = document.createElementNS(
+	for (const { identifier, pageX, pageY } of e.changedTouches) {
+		const svgX = m === undefined ? undefined : m.a * pageX + m.c * pageY + m.e;
+		const svgY = m === undefined ? undefined : m.b * pageX + m.d * pageY + m.f;
+		if (e.type === "touchstart" && svgX !== undefined && svgY !== undefined) {
+			const hue = engagingHues.add(identifier);
+			const circle = document.createElementNS(
 				"http://www.w3.org/2000/svg",
 				"circle",
 			);
-			svgCircle.setAttribute("r", 0.1);
-			svgCircle.setAttribute("cx", svgX);
-			svgCircle.setAttribute("cy", svgY);
-			svgCircle.setAttribute(
-				"fill",
-				`hsl(${engagingHues.lookup(identifier)} 100% 50%)`,
-			);
-			main.append(svgCircle);
+			circle.setAttribute("r", "0.1");
+			circle.setAttribute("cx", `${svgX}`);
+			circle.setAttribute("cy", `${svgY}`);
+			circle.setAttribute("fill", `hsl(${hue} 100% 50%)`);
+			touches.set(identifier, circle);
+			main.appendChild(circle);
+		} else if (
+			e.type === "touchmove" &&
+			svgX !== undefined &&
+			svgY !== undefined
+		) {
+			const circle = touches.get(identifier);
+			if (circle) {
+				circle.setAttribute("cx", `${svgX}`);
+				circle.setAttribute("cy", `${svgY}`);
+			}
+		} else if (e.type === "touchend" || e.type === "touchcancel") {
+			engagingHues.remove(identifier);
+			const circle = touches.get(identifier);
+			touches.delete(identifier);
+			if (circle) {
+				main.removeChild(circle);
+			}
 		}
 	}
 };
