@@ -16,7 +16,7 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"superhtml": "superhtml fmt index.html",
-		"storybook": "storybook dev -p 6006",
+		"storybook": "storybook dev --no-open",
 		"test": "vitest run",
 		"build-storybook": "storybook build"
 	},
@@ -29,11 +29,11 @@
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.4.0",
 		"storybook": "^10.0.8",
-		"svelte": "^5.43.2",
-		"turbo": "^2.5.8",
+		"svelte": "^5.43.14",
+		"turbo": "^2.6.1",
 		"typescript": "~5.9.3",
 		"vite": "npm:rolldown-vite@7.1.14",
-		"vitest": "^4.0.9"
+		"vitest": "^4.0.13"
 	},
 	"pnpm": {
 		"overrides": {

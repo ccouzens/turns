@@ -14,8 +14,6 @@ const touches: Map<Touch["identifier"], SVGCircleElement> = new Map();
 const engagingHues = new EngagingHues(randomSequence());
 
 const touchHandler: (e: TouchEvent) => void = (e) => {
-	console.log(e.type);
-	// e.preventDefault();
 	const m = main.getScreenCTM()?.inverse();
 
 	for (const { identifier, pageX, pageY } of e.changedTouches) {
@@ -53,7 +51,6 @@ const touchHandler: (e: TouchEvent) => void = (e) => {
 		}
 	}
 };
-main.addEventListener("touchstart", touchHandler);
-main.addEventListener("touchmove", touchHandler);
-main.addEventListener("touchend", touchHandler);
-main.addEventListener("touchcancel", touchHandler);
+for (const t of ["start", "move", "end", "cancel"] as const) {
+	main.addEventListener(`touch${t}`, touchHandler);
+}
