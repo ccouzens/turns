@@ -22,9 +22,17 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3" # actions/checkout@v6
-
-      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # pnpm/action-setup@v4
-
+      - name: Install pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Use Node.js
+        uses: actions/setup-node@633bb92bc0aabcae06e8ea93b85aecddd374c402 # actions/setup-node@v4
+        with:
+          node-version: 25
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
       - name: "build"
         run: pnpm exec turbo build
 
