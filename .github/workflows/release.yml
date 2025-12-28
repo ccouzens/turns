@@ -60,6 +60,6 @@ jobs:
 
     steps:
       - name: Deploy to github pages
-        uses: actions/configure-github-pages@983d7736d9b0ae728b81ab479565c72886d7745b # actions/configure-github-pages@v5.0.0
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # actions/configure-pages@v5.0.0
         with:
           enablement: true
