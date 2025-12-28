@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   build-artifact:
-    name: Setup, Build, Publish
+    name: Build
     runs-on: ubuntu-latest
     environment: production
 
@@ -48,8 +48,8 @@ jobs:
         with:
           path: dist
 
-  publish-site:
-    name: publish github site
+  publish-github-site:
+    name: Publish github site
     runs-on: ubuntu-latest
     needs: [build-artifact]
 
