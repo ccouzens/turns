@@ -34,7 +34,6 @@
 }
 
 @media not (any-pointer: coarse) {
-
 	#device-unsupported,
 	#touch-unsupported {
 		display: revert;
