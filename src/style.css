@@ -7,8 +7,8 @@
 	z-index: -1;
 	inset: 0 0 0 0;
 	position: absolute;
-	width: 100vw;
-	height: 100vh;
+	min-width: 100vw;
+	min-height: 100vh;
 	background-color: grey;
 	touch-action: none;
 }
@@ -20,12 +20,12 @@
 }
 
 #device-unsupported {
-	font-size: 2em;
 	color: light-dark(black, white);
 	background-color: light-dark(white, black);
 	padding: 1em;
-	margin: 1em;
+	margin: 1em auto;
 	border-radius: 1em;
+	max-width: max-content;
 }
 
 #device-unsupported:has(#webgpu-unsupported.applicable),
@@ -34,6 +34,7 @@
 }
 
 @media not (any-pointer: coarse) {
+
 	#device-unsupported,
 	#touch-unsupported {
 		display: revert;
