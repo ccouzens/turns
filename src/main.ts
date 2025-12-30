@@ -54,3 +54,10 @@ const touchHandler: (e: TouchEvent) => void = (e) => {
 for (const t of ["start", "move", "end", "cancel"] as const) {
 	main.addEventListener(`touch${t}`, touchHandler);
 }
+
+const gpuAdapter = await navigator.gpu?.requestAdapter();
+if (!gpuAdapter) {
+	document.getElementById("webgpu-unsupported")?.classList.add("applicable");
+} else {
+	const gpuDevice = await gpuAdapter.requestDevice();
+}

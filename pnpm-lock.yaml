@@ -26,6 +26,9 @@ importers:
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
+      '@webgpu/types':
+        specifier: ^0.1.68
+        version: 0.1.68
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -564,6 +567,9 @@ packages:
 
   '@vitest/utils@4.0.13':
     resolution: {integrity: sha512-ydozWyQ4LZuu8rLp47xFUWis5VOKMdHjXCWhs1LuJsTNKww+pTHQNK4e0assIB9K80TxFyskENL6vCu3j34EYA==}
+
+  '@webgpu/types@0.1.68':
+    resolution: {integrity: sha512-3ab1B59Ojb6RwjOspYLsTpCzbNB3ZaamIAxBMmvnNkiDoLTZUOBXZ9p5nAYVEkQlDdf6qAZWi1pqj9+ypiqznA==}
 
   acorn@8.15.0:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
@@ -1552,6 +1558,8 @@ snapshots:
     dependencies:
       '@vitest/pretty-format': 4.0.13
       tinyrainbow: 3.0.3
+
+  '@webgpu/types@0.1.68': {}
 
   acorn@8.15.0: {}
 
